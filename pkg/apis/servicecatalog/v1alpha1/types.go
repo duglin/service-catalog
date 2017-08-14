@@ -340,14 +340,6 @@ type InstanceSpec struct {
 	//
 	// Immutable.
 	ExternalID string `json:"externalID"`
-
-	// Currently, this field is ALPHA: it may change or disappear at any time
-	// and its data will not be migrated.
-	//
-	// AlphaUser contains information about the user that created this
-	// instance. This field is set by the API server and not settable by the
-	// end-user. User-provided values for this field are not saved.
-	AlphaUser AlphaUserInfo `json:"alphaUserInfo,omitempty"`
 }
 
 // InstanceStatus represents the current status of an Instance.
@@ -372,6 +364,18 @@ type InstanceStatus struct {
 	// Checksum is the checksum of the InstanceSpec that was last successfully
 	// reconciled against the broker.
 	Checksum *string `json:"checksum,omitempty"`
+
+	// Currently, this field is ALPHA: it may change or disappear at any time
+	// and its data will not be migrated.
+	//
+	// AlphaActionUser contains information about the user that requested a
+	// particular action. The 'key' in the map is the OSB API action
+	// that will be taken (eg 'create', 'delete') and the 'value' is
+	// the UserInfo of the person who asked for it to be done.
+	//
+	// Note that if we want to support a queue of requests for one
+	// particular then we'll need something else.
+	AlphaActionUser map[string]AlphaUserInfo `json:"alphaActionUser,omitempty"`
 }
 
 // InstanceCondition contains condition information about an Instance.
@@ -460,14 +464,6 @@ type BindingSpec struct {
 	//
 	// Immutable.
 	ExternalID string `json:"externalID"`
-
-	// Currently, this field is ALPHA: it may change or disappear at any time
-	// and its data will not be migrated.
-	//
-	// AlphaUser contains information about the user that created this
-	// binding. This field is set by the API server and not settable by the
-	// end-user. User-provided values for this field are not saved.
-	AlphaUser AlphaUserInfo
 }
 
 // BindingStatus represents the current status of a Binding.
@@ -477,6 +473,18 @@ type BindingStatus struct {
 	// Checksum is the checksum of the BindingSpec that was last successfully
 	// reconciled against the broker.
 	Checksum *string `json:"checksum,omitempty"`
+
+	// Currently, this field is ALPHA: it may change or disappear at any time
+	// and its data will not be migrated.
+	//
+	// AlphaActionUser contains information about the user that requested a
+	// particular action. The 'key' in the map is the OSB API action
+	// that will be taken (eg 'create', 'delete') and the 'value' is
+	// the UserInfo of the person who asked for it to be done.
+	//
+	// Note that if we want to support a queue of requests for one
+	// particular then we'll need something else.
+	AlphaActionUser map[string]AlphaUserInfo
 }
 
 // BindingCondition condition information for a Binding.

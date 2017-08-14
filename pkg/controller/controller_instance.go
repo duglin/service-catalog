@@ -479,6 +479,9 @@ func (c *controller) reconcileInstance(instance *v1alpha1.Instance) error {
 		return err
 	}
 
+	// Clear any UserInfo associated with the create
+	delete(toUpdate.Status.AlphaActionUser, "create")
+
 	if response.DashboardURL != nil && *response.DashboardURL != "" {
 		url := *response.DashboardURL
 		toUpdate.Status.DashboardURL = &url

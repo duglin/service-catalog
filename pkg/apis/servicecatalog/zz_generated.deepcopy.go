@@ -193,9 +193,6 @@ func DeepCopy_servicecatalog_BindingSpec(in interface{}, out interface{}, c *con
 				}
 			}
 		}
-		if err := DeepCopy_servicecatalog_AlphaUserInfo(&in.AlphaUser, &out.AlphaUser, c); err != nil {
-			return err
-		}
 		return nil
 	}
 }
@@ -209,12 +206,27 @@ func DeepCopy_servicecatalog_BindingStatus(in interface{}, out interface{}, c *c
 		if in.Conditions != nil {
 			in, out := &in.Conditions, &out.Conditions
 			*out = make([]BindingCondition, len(*in))
-			copy(*out, *in)
+			for i := range *in {
+				if err := DeepCopy_servicecatalog_BindingCondition(&(*in)[i], &(*out)[i], c); err != nil {
+					return err
+				}
+			}
 		}
 		if in.Checksum != nil {
 			in, out := &in.Checksum, &out.Checksum
 			*out = new(string)
 			**out = **in
+		}
+		if in.AlphaActionUser != nil {
+			in, out := &in.AlphaActionUser, &out.AlphaActionUser
+			*out = make(map[string]AlphaUserInfo)
+			for key, val := range *in {
+				newVal := new(AlphaUserInfo)
+				if err := DeepCopy_servicecatalog_AlphaUserInfo(&val, newVal, c); err != nil {
+					return err
+				}
+				(*out)[key] = *newVal
+			}
 		}
 		return nil
 	}
@@ -326,7 +338,11 @@ func DeepCopy_servicecatalog_BrokerStatus(in interface{}, out interface{}, c *co
 		if in.Conditions != nil {
 			in, out := &in.Conditions, &out.Conditions
 			*out = make([]BrokerCondition, len(*in))
-			copy(*out, *in)
+			for i := range *in {
+				if err := DeepCopy_servicecatalog_BrokerCondition(&(*in)[i], &(*out)[i], c); err != nil {
+					return err
+				}
+			}
 		}
 		if in.Checksum != nil {
 			in, out := &in.Checksum, &out.Checksum
@@ -411,9 +427,6 @@ func DeepCopy_servicecatalog_InstanceSpec(in interface{}, out interface{}, c *co
 				}
 			}
 		}
-		if err := DeepCopy_servicecatalog_AlphaUserInfo(&in.AlphaUser, &out.AlphaUser, c); err != nil {
-			return err
-		}
 		return nil
 	}
 }
@@ -427,7 +440,11 @@ func DeepCopy_servicecatalog_InstanceStatus(in interface{}, out interface{}, c *
 		if in.Conditions != nil {
 			in, out := &in.Conditions, &out.Conditions
 			*out = make([]InstanceCondition, len(*in))
-			copy(*out, *in)
+			for i := range *in {
+				if err := DeepCopy_servicecatalog_InstanceCondition(&(*in)[i], &(*out)[i], c); err != nil {
+					return err
+				}
+			}
 		}
 		if in.LastOperation != nil {
 			in, out := &in.LastOperation, &out.LastOperation
@@ -443,6 +460,17 @@ func DeepCopy_servicecatalog_InstanceStatus(in interface{}, out interface{}, c *
 			in, out := &in.Checksum, &out.Checksum
 			*out = new(string)
 			**out = **in
+		}
+		if in.AlphaActionUser != nil {
+			in, out := &in.AlphaActionUser, &out.AlphaActionUser
+			*out = make(map[string]AlphaUserInfo)
+			for key, val := range *in {
+				newVal := new(AlphaUserInfo)
+				if err := DeepCopy_servicecatalog_AlphaUserInfo(&val, newVal, c); err != nil {
+					return err
+				}
+				(*out)[key] = *newVal
+			}
 		}
 		return nil
 	}

@@ -245,9 +245,6 @@ func autoConvert_v1alpha1_BindingSpec_To_servicecatalog_BindingSpec(in *BindingS
 	out.ParametersFrom = *(*[]servicecatalog.ParametersFromSource)(unsafe.Pointer(&in.ParametersFrom))
 	out.SecretName = in.SecretName
 	out.ExternalID = in.ExternalID
-	if err := Convert_v1alpha1_AlphaUserInfo_To_servicecatalog_AlphaUserInfo(&in.AlphaUser, &out.AlphaUser, s); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -262,9 +259,6 @@ func autoConvert_servicecatalog_BindingSpec_To_v1alpha1_BindingSpec(in *servicec
 	out.ParametersFrom = *(*[]ParametersFromSource)(unsafe.Pointer(&in.ParametersFrom))
 	out.SecretName = in.SecretName
 	out.ExternalID = in.ExternalID
-	if err := Convert_servicecatalog_AlphaUserInfo_To_v1alpha1_AlphaUserInfo(&in.AlphaUser, &out.AlphaUser, s); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -276,6 +270,7 @@ func Convert_servicecatalog_BindingSpec_To_v1alpha1_BindingSpec(in *servicecatal
 func autoConvert_v1alpha1_BindingStatus_To_servicecatalog_BindingStatus(in *BindingStatus, out *servicecatalog.BindingStatus, s conversion.Scope) error {
 	out.Conditions = *(*[]servicecatalog.BindingCondition)(unsafe.Pointer(&in.Conditions))
 	out.Checksum = (*string)(unsafe.Pointer(in.Checksum))
+	out.AlphaActionUser = *(*map[string]servicecatalog.AlphaUserInfo)(unsafe.Pointer(&in.AlphaActionUser))
 	return nil
 }
 
@@ -291,6 +286,7 @@ func autoConvert_servicecatalog_BindingStatus_To_v1alpha1_BindingStatus(in *serv
 		out.Conditions = *(*[]BindingCondition)(unsafe.Pointer(&in.Conditions))
 	}
 	out.Checksum = (*string)(unsafe.Pointer(in.Checksum))
+	out.AlphaActionUser = *(*map[string]AlphaUserInfo)(unsafe.Pointer(&in.AlphaActionUser))
 	return nil
 }
 
@@ -549,9 +545,6 @@ func autoConvert_v1alpha1_InstanceSpec_To_servicecatalog_InstanceSpec(in *Instan
 	out.Parameters = (*runtime.RawExtension)(unsafe.Pointer(in.Parameters))
 	out.ParametersFrom = *(*[]servicecatalog.ParametersFromSource)(unsafe.Pointer(&in.ParametersFrom))
 	out.ExternalID = in.ExternalID
-	if err := Convert_v1alpha1_AlphaUserInfo_To_servicecatalog_AlphaUserInfo(&in.AlphaUser, &out.AlphaUser, s); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -566,9 +559,6 @@ func autoConvert_servicecatalog_InstanceSpec_To_v1alpha1_InstanceSpec(in *servic
 	out.Parameters = (*runtime.RawExtension)(unsafe.Pointer(in.Parameters))
 	out.ParametersFrom = *(*[]ParametersFromSource)(unsafe.Pointer(&in.ParametersFrom))
 	out.ExternalID = in.ExternalID
-	if err := Convert_servicecatalog_AlphaUserInfo_To_v1alpha1_AlphaUserInfo(&in.AlphaUser, &out.AlphaUser, s); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -583,6 +573,7 @@ func autoConvert_v1alpha1_InstanceStatus_To_servicecatalog_InstanceStatus(in *In
 	out.LastOperation = (*string)(unsafe.Pointer(in.LastOperation))
 	out.DashboardURL = (*string)(unsafe.Pointer(in.DashboardURL))
 	out.Checksum = (*string)(unsafe.Pointer(in.Checksum))
+	out.AlphaActionUser = *(*map[string]servicecatalog.AlphaUserInfo)(unsafe.Pointer(&in.AlphaActionUser))
 	return nil
 }
 
@@ -601,6 +592,7 @@ func autoConvert_servicecatalog_InstanceStatus_To_v1alpha1_InstanceStatus(in *se
 	out.LastOperation = (*string)(unsafe.Pointer(in.LastOperation))
 	out.DashboardURL = (*string)(unsafe.Pointer(in.DashboardURL))
 	out.Checksum = (*string)(unsafe.Pointer(in.Checksum))
+	out.AlphaActionUser = *(*map[string]AlphaUserInfo)(unsafe.Pointer(&in.AlphaActionUser))
 	return nil
 }
 

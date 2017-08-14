@@ -292,18 +292,12 @@ func GetOpenAPIDefinitions(ref openapi.ReferenceCallback) map[string]openapi.Ope
 								Format:      "",
 							},
 						},
-						"AlphaUser": {
-							SchemaProps: spec.SchemaProps{
-								Description: "Currently, this field is ALPHA: it may change or disappear at any time and its data will not be migrated.\n\nAlphaUser contains information about the user that created this binding. This field is set by the API server and not settable by the end-user. User-provided values for this field are not saved.",
-								Ref:         ref("github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.AlphaUserInfo"),
-							},
-						},
 					},
-					Required: []string{"instanceRef", "externalID", "AlphaUser"},
+					Required: []string{"instanceRef", "externalID"},
 				},
 			},
 			Dependencies: []string{
-				"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.AlphaUserInfo", "github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.ParametersFromSource", "k8s.io/apimachinery/pkg/runtime.RawExtension", "k8s.io/client-go/pkg/api/v1.LocalObjectReference"},
+				"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.ParametersFromSource", "k8s.io/apimachinery/pkg/runtime.RawExtension", "k8s.io/client-go/pkg/api/v1.LocalObjectReference"},
 		},
 		"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.BindingStatus": {
 			Schema: spec.Schema{
@@ -329,12 +323,25 @@ func GetOpenAPIDefinitions(ref openapi.ReferenceCallback) map[string]openapi.Ope
 								Format:      "",
 							},
 						},
+						"AlphaActionUser": {
+							SchemaProps: spec.SchemaProps{
+								Description: "Currently, this field is ALPHA: it may change or disappear at any time and its data will not be migrated.\n\nAlphaActionUser contains information about the user that requested a particular action. The 'key' in the map is the OSB API action that will be taken (eg 'create', 'delete') and the 'value' is the UserInfo of the person who asked for it to be done.\n\nNote that if we want to support a queue of requests for one particular then we'll need something else.",
+								Type:        []string{"object"},
+								AdditionalProperties: &spec.SchemaOrBool{
+									Schema: &spec.Schema{
+										SchemaProps: spec.SchemaProps{
+											Ref: ref("github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.AlphaUserInfo"),
+										},
+									},
+								},
+							},
+						},
 					},
-					Required: []string{"conditions"},
+					Required: []string{"conditions", "AlphaActionUser"},
 				},
 			},
 			Dependencies: []string{
-				"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.BindingCondition"},
+				"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.AlphaUserInfo", "github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.BindingCondition"},
 		},
 		"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.Broker": {
 			Schema: spec.Schema{
@@ -727,18 +734,12 @@ func GetOpenAPIDefinitions(ref openapi.ReferenceCallback) map[string]openapi.Ope
 								Format:      "",
 							},
 						},
-						"alphaUserInfo": {
-							SchemaProps: spec.SchemaProps{
-								Description: "Currently, this field is ALPHA: it may change or disappear at any time and its data will not be migrated.\n\nAlphaUser contains information about the user that created this instance. This field is set by the API server and not settable by the end-user. User-provided values for this field are not saved.",
-								Ref:         ref("github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.AlphaUserInfo"),
-							},
-						},
 					},
 					Required: []string{"serviceClassName", "planName", "externalID"},
 				},
 			},
 			Dependencies: []string{
-				"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.AlphaUserInfo", "github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.ParametersFromSource", "k8s.io/apimachinery/pkg/runtime.RawExtension"},
+				"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.ParametersFromSource", "k8s.io/apimachinery/pkg/runtime.RawExtension"},
 		},
 		"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.InstanceStatus": {
 			Schema: spec.Schema{
@@ -786,12 +787,25 @@ func GetOpenAPIDefinitions(ref openapi.ReferenceCallback) map[string]openapi.Ope
 								Format:      "",
 							},
 						},
+						"alphaActionUser": {
+							SchemaProps: spec.SchemaProps{
+								Description: "Currently, this field is ALPHA: it may change or disappear at any time and its data will not be migrated.\n\nAlphaActionUser contains information about the user that requested a particular action. The 'key' in the map is the OSB API action that will be taken (eg 'create', 'delete') and the 'value' is the UserInfo of the person who asked for it to be done.\n\nNote that if we want to support a queue of requests for one particular then we'll need something else.",
+								Type:        []string{"object"},
+								AdditionalProperties: &spec.SchemaOrBool{
+									Schema: &spec.Schema{
+										SchemaProps: spec.SchemaProps{
+											Ref: ref("github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.AlphaUserInfo"),
+										},
+									},
+								},
+							},
+						},
 					},
 					Required: []string{"conditions", "asyncOpInProgress"},
 				},
 			},
 			Dependencies: []string{
-				"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.InstanceCondition"},
+				"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.AlphaUserInfo", "github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.InstanceCondition"},
 		},
 		"github.com/kubernetes-incubator/service-catalog/pkg/apis/servicecatalog/v1alpha1.ParametersFromSource": {
 			Schema: spec.Schema{
@@ -1402,7 +1416,15 @@ func GetOpenAPIDefinitions(ref openapi.ReferenceCallback) map[string]openapi.Ope
 			Schema: spec.Schema{
 				SchemaProps: spec.SchemaProps{
 					Description: "Duration is a wrapper around time.Duration which supports correct marshaling to YAML and JSON. In particular, it marshals into strings, which can be used as map keys in json.",
-					Properties:  map[string]spec.Schema{},
+					Properties: map[string]spec.Schema{
+						"Duration": {
+							SchemaProps: spec.SchemaProps{
+								Type:   []string{"integer"},
+								Format: "int64",
+							},
+						},
+					},
+					Required: []string{"Duration"},
 				},
 			},
 			Dependencies: []string{},
